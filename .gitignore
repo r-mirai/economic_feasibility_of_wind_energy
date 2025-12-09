@@ -1,0 +1,6 @@
+/data/wind_data_all
+build
+__pycache__
+.DS_Store
+*test*
+doc/figures/*

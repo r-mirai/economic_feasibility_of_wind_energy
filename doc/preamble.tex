@@ -1,0 +1,49 @@
+% ---------- Шрифты ----------------
+\usepackage{fontspec}                
+\setmainfont{Times New Roman}
+
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+
+% ---------- Языки -----------------
+\usepackage{polyglossia}             
+\setmainlanguage{russian}            
+\setotherlanguage{english}           
+
+% ---------- Разметка --------------
+\usepackage{geometry}
+\geometry{top=2cm, bottom=2cm, left=3cm, right=1.5cm}
+
+\setlength{\parindent}{1.5cm}       
+\usepackage{indentfirst}
+
+% ---------- Интервалы -------------
+\usepackage{setspace} 
+\onehalfspacing 
+
+%--------- Другие ------------------
+\usepackage{booktabs} % красивые таблицы
+\usepackage{tabularx} %
+\usepackage{graphicx} % вставка картинок
+\usepackage{rotating} % 
+\usepackage{graphicx} %
+\usepackage{array}
+
+%--------- Определения -------------
+\newcommand{\deriv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dd}[2]{\frac{d #1}{d #2}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\rotatefigure}[4][-90]{%
+    \begin{figure}[p]%
+    \centering%
+    \begin{turn}{#1}%
+    \begin{minipage}{\textheight}%
+    \centering%
+    \includegraphics[width=#2\textwidth]{#3}%
+    \caption{#4}%
+    \end{minipage}%
+    \end{turn}%
+    \end{figure}%
+}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+%--------- Окружения ---------------
