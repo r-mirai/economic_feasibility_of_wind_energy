@@ -10,11 +10,10 @@ from io import StringIO
 from typing import Literal
 
 class WindDataDownloader:
-    def __init__(self, city_coords=None):
-
+    def __init__(self, city_coords=None, zarr_path=None):
         self.sem = asyncio.Semaphore(50)
-        self.zarr_path = '../data/wind_data'
         self.city_coords = city_coords or self.download_city_coords()
+        self.zarr_path = zarr_path or '../data/wind_data_all'
         self.max_len = max(len(city) for city in self.city_coords.keys())
 
     def download_city_coords(self):
@@ -23,8 +22,12 @@ class WindDataDownloader:
         city_coords = dict()
         for _, data in df[['city', 'lon', 'lat']].iterrows():
             city_coords[data['city']] = (data['lon'], data['lat'])
+        print(f'City coords downloaded. {len(city_coords)} cities')
         return city_coords
-        
+
+    def add_heights(heights=np.array([20, 30])):
+        pass
+    
     async def download_wind_df_async(
         self, 
         coords: tuple, 

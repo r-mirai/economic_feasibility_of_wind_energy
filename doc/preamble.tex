@@ -5,12 +5,14 @@
 \usepackage{unicode-math}
 \setmathfont{latinmodern-math.otf}
 
+\newfontfamily\cyrillicfonttt[Script=Cyrillic]{Times New Roman}
+
 % ---------- Языки -----------------
 \usepackage{polyglossia}             
 \setmainlanguage{russian}            
 \setotherlanguage{english}           
 
-% ---------- Разметка --------------
+% ---------- Разметка страницы --------------
 \usepackage{geometry}
 \geometry{top=2cm, bottom=2cm, left=3cm, right=1.5cm}
 
@@ -21,29 +23,89 @@
 \usepackage{setspace} 
 \onehalfspacing 
 
-%--------- Другие ------------------
-\usepackage{booktabs} % красивые таблицы
-\usepackage{tabularx} %
-\usepackage{graphicx} % вставка картинок
-\usepackage{rotating} % 
-\usepackage{graphicx} %
-\usepackage{array}
+% ---------- Таблицы и графика -----------
+\usepackage{booktabs}  % красивые таблицы
+\usepackage{tabularx}  
+\usepackage{array}     
+% \usepackage[draft]{graphicx}  % вставка картинок
+\usepackage{graphicx}  % вставка картинок
+\usepackage{rotating}  % боковые фигуры
+\usepackage{floatrow}  
+\floatsetup[table]{capposition=top}
 
-%--------- Определения -------------
+\setlength{\floatsep}{6pt}
+\setlength{\textfloatsep}{12pt}
+\setlength{\intextsep}{12pt}
+
+% ---------- Списки и форматирование ----------
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+% ---------- Математика ----------
+\usepackage{amsmath}        
+\numberwithin{equation}{section}
+
+% ---------- Собственные команды -------------
 \newcommand{\deriv}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\dd}[2]{\frac{d #1}{d #2}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\rotatefigure}[4][-90]{%
-    \begin{figure}[p]%
-    \centering%
-    \begin{turn}{#1}%
-    \begin{minipage}{\textheight}%
-    \centering%
-    \includegraphics[width=#2\textwidth]{#3}%
-    \caption{#4}%
-    \end{minipage}%
-    \end{turn}%
-    \end{figure}%
+
+\newcommand{\rotatefigure}[3]{%
+\begin{sidewaysfigure}
+\centering
+\includegraphics[width=#1\textheight]{#2}
+\caption{#3}
+\end{sidewaysfigure}
 }
+
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
-%--------- Окружения ---------------
+
+% ---------- Оглавление (TOC) ----------
+\usepackage{tocloft}
+
+\addto\captionsrussian{\renewcommand{\contentsname}{СОДЕРЖАНИЕ}}
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\normalfont\normalsize\bfseries}
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}\par}
+\renewcommand{\cftsecfont}{\normalfont\normalsize}
+\renewcommand{\cftsubsecfont}{\normalfont\normalsize}
+\renewcommand{\cftsecpagefont}{\normalfont\normalsize}
+\renewcommand{\cftsubsecpagefont}{\normalfont\normalsize}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftbeforesubsubsecskip}{0pt}
+\setlength{\cftsecnumwidth}{1.5em}
+\setlength{\cftsubsecnumwidth}{2em}
+
+% ---------- Нумерация секций и формул ----------
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+\renewcommand{\theequation}{\thesection\arabic{equation}.}
+
+\titleformat{\section}
+  {\normalfont\normalsize\bfseries\centering}
+  {\thesection}
+  {0.5em}
+  {}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\centering}
+  {\thesubsection}
+  {0.5em}
+  {}
+
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{\baselineskip}
+
+% ---------- Настройки для формул ----------
+\makeatletter
+\g@addto@macro\normalsize{
+  \setlength{\abovedisplayskip}{12pt}%
+  \setlength{\belowdisplayskip}{12pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{14pt}%
+}
+\makeatother
+

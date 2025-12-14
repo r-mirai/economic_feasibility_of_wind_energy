@@ -1,29 +1,27 @@
-\documentclass[14pt]{extarticle} 
+\documentclass[14pt]{extarticle}
 \input{preamble}
 
-\usepackage{array}
-
+\includeonly{
+  % chapters/determination_of_wind_characteristics,
+  % chapters/energy_consumption_curve
+  chapters/energy_generation
+}
 
 \begin{document}
+
 \thispagestyle{empty}
-\input{chapters/title_page.tex}
-\pagebreak
+\include{chapters/title_page}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=\linewidth]{figures/2_Профиль энергопотребления.png}
-    % \caption{Выработанная мощность за январь 2024 года}
-    \label{fig:jan_power}
-\end{figure}
+\tableofcontents
 
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=\linewidth]{figures/3_Выработанная мощность за январь 2024 года.png}
-%     % \caption{Выработанная мощность за январь 2024 года}
-%     \label{fig:jan_power}
-% \end{figure}
-
-% \rotatefigure{0.9}{figures/1_Средняя скорость ветра по часам в разные месяца.png}{ff}
+\include{chapters/introduction}
+\include{chapters/determination_of_wind_characteristics}
+\include{chapters/energy_consumption_curve}
+\include{chapters/energy_generation}
+\include{chapters/simulation_data}
+\include{chapters/occupied_area}
+\include{chapters/aerodynamic_parameters}
+\include{chapters/generator_characteristics}
+\include{chapters/economic_calculation}
 
 \end{document}
-

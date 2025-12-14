@@ -1,4 +1,4 @@
-/data/wind_data_all
+/data/wind_data*
 build
 __pycache__
 .DS_Store
