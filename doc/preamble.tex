@@ -31,16 +31,39 @@
 \usepackage{graphicx}  % вставка картинок
 \usepackage{rotating}  % боковые фигуры
 \usepackage{floatrow}  
+\usepackage{caption}
+
 \floatsetup[table]{capposition=top}
 
 \setlength{\floatsep}{6pt}
 \setlength{\textfloatsep}{12pt}
 \setlength{\intextsep}{12pt}
 
+\addto\captionsrussian{%
+  \renewcommand{\figurename}{Рисунок}
+}
+
+\captionsetup{
+  font=small
+}
+
 % ---------- Списки и форматирование ----------
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{needspace}
+\setlist[enumerate]{
+  leftmargin=1.5cm,
+  topsep=0em,
+  itemsep=0em,
+  % labelsep=0em
+}
+\setlist[itemize]{
+  leftmargin=1.5cm,
+  topsep=0em,
+  itemsep=0em,
+  % labelsep=0em,
+}
+
 
 % ---------- Математика ----------
 \usepackage{amsmath}        
