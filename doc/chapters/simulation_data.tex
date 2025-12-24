@@ -1,1 +1,100 @@
-\section{\centering МОДЕЛИРОВАНИЕ РАБОТЫ ВСЕЙ СИСТЕМЫ}
+\section{МОДЕЛИРОВАНИЕ РАБОТЫ ВСЕЙ СИСТЕМЫ}
+\subsection{Описание модели}
+В данной главе проводится моделирование работы всей энергосистемы с целью оценки ключевых показателей: 
+остатка энергии после удовлетворения нагрузки, 
+общего объёма потреблённой энергии 
+и количества часов автономной работы при заданных параметрах модели. 
+Схема алгоритма представлена ниже.
+
+\begin{figure}[h!]
+\centering
+    \begin{tikzpicture}[node distance=4cm, auto]
+
+    % Стили блоков
+    \tikzstyle{source} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{battery} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{consumer} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+    % Узлы
+    \node (source)[source]{Источник энергии};
+    \node (battery)[battery, below of=source]{Батарея};
+    \node (consumer)[consumer, right of=battery, xshift=6cm]{Потребитель};
+
+    % Потоки энергии
+    \draw[arrow] (source.south) -- (battery.north) node[midway, right] {1. Зарядка батареи};
+    \draw[arrow](battery.east) -- (consumer.west) node[midway, above, sloped] {2. Питание из батареи};
+    \draw[arrow](source.east) -| (consumer.north) node[pos=0.3, above] {3. Прямое питание};
+    \draw[arrow, dashed](source.north) -- ++(0,1) node[midway, right] {4. Излишки энергии};
+
+    \end{tikzpicture}
+\caption{Схема передачи энергии между источником, батареей и потребителем}
+\end{figure}
+
+Для каждого шага цикла (в данной модели $\Delta t = 1$ час) выполняется следующая последовательность действий:
+
+\begin{enumerate}
+    \item Энергия от генератора поступает на заряд батареи.
+    \item Затем энергия от батареи направляется потребителю.
+    \item Если потребность потребителя не удовлетворена и у генератора осталась энергия, эта остаточная энергия передается потребителю.
+    \item Оставшаяся после этого энергия генератора отправляется в сеть.
+    \item В конце цикла уровень заряда батареи уменьшается на $\text{battery loss}=0.005$.
+\end{enumerate}
+
+Каждая операция передачи энергии (п. 1--4) выполняется с эффективностью $\text{supplied efficiency}=0.95$ 
+и пакетами мощности не более $\text{max supplied}=3$ $\text{кВт} \cdot \text{ч}$.
+
+\pagebreak
+Важно отметить, что рассмотренная модель является одной из возможных схем подключения.
+Например, можно было бы изменить порядок действий: сначала направлять энергию напрямую потребителю, и только потом заряжать аккумулятор.
+Такое изменение, вероятно, повлияло бы на итоговые показатели системы на 5--10\% в ту или иную сторону, поэтому для упрощения анализа данный вариант не рассматривался.
+
+\pagebreak
+\subsection{Анализ данных симуляции}
+
+После генерации мы получили вышеупомянутые дынные. 
+Приведем несколько графиков. 
+
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 10 м для города Казань.png}
+    \caption{Доля независимых часов на высоте 10 м для города Казань}
+\end{figure}
+
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 10 м для города Набережные Челны.png}
+    \caption{Доля независимых часов на высоте 10 м для города Набережные Челны}
+\end{figure}
+
+\pagebreak
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 10 м для города Таганрог.png}
+    \caption{Доля независимых часов на высоте 10 м для города Таганрог}
+\end{figure}
+
+Теперь исходя из наших потребностей мы можем выбрать подходящую мощность ветрогенератора
+и объем батареи. Но нужно понимать, что от месяца эти числа тоже будут зависеть. 
+Приведем несколько графиков для понимания этой зависимости.
+
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 20 м для города Казань при объеме батареи 6000 кВт*ч по месяцам.png}
+    \caption{Доля независимых часов на высоте 20 м для города Казань при объеме батареи 6000 $\text{кВт}\cdot\text{ч}$ по месяцам}
+\end{figure}
+
+\pagebreak
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 20 м для города Набережные Челны при объеме батареи 6000 кВт*ч по месяцам.png}
+    \caption{Доля независимых часов на высоте 20 м для города Набережные Челны при объеме батареи 6000 $\text{кВт}\cdot\text{ч}$ по месяцам}
+\end{figure}
+
+\begin{figure}[!htbp] 
+    \centering
+    \includegraphics[width=0.9\textwidth, draft=false]{figures/4_Доля независимых часов на высоте 20 м для города Таганрог при объеме батареи 6000 кВт*ч по месяцам.png}
+    \caption{Доля независимых часов на высоте 20 м для города Таганрог при объеме батареи 6000 $\text{кВт}\cdot\text{ч}$ по месяцам}
+\end{figure}
+
+Следует отметить, что учет сезонной зависимости энергопотребления мог бы сгладить колебания, наблюдаемые на приведенных графиках.

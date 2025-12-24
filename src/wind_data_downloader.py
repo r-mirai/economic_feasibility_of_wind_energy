@@ -11,7 +11,8 @@ from typing import Literal
 
 class WindDataDownloader:
     def __init__(self, city_coords=None, zarr_path=None):
-        self.sem = asyncio.Semaphore(50)
+        self.download_limit = 30
+        self.sem = asyncio.Semaphore(self.download_limit)
         self.city_coords = city_coords or self.download_city_coords()
         self.zarr_path = zarr_path or '../data/wind_data_all'
         self.max_len = max(len(city) for city in self.city_coords.keys())
@@ -105,8 +106,7 @@ class WindDataDownloader:
             self, 
             start_year, end_year, 
             heights=np.array([10, 20, 30]), 
-            frequency: Literal["daily", "hourly"] = 'hourly',
-            batch_size=50
+            frequency: Literal["daily", "hourly"] = 'hourly'
         ):
 
         cities = list(self.city_coords.items()) # [(city, city_cords)]
@@ -114,8 +114,8 @@ class WindDataDownloader:
         first_write = True
 
         async with aiohttp.ClientSession() as session:
-            for batch_start in range(0, total, batch_size):
-                batch = cities[batch_start : batch_start + batch_size]
+            for batch_start in range(0, total, self.download_limit):
+                batch = cities[batch_start : batch_start + self.download_limit]
                 tasks = [
                     self.download_wind_df_async(city_coords, start_year, end_year, session, heights, frequency)
                     for _, city_coords in batch
@@ -128,7 +128,7 @@ class WindDataDownloader:
 
                 del dfs
                 gc.collect()
-                print(f"Батч {batch_start//batch_size + 1} готов")
+                print(f"Батч {batch_start//self.download_limit + 1} готов")
 
     def make_wind_dataarray(self, wind_sources):
         """

@@ -54,17 +54,18 @@ def _simulate_battery_numpy(
 
 def simulate_battery_system_xr(
     power_data: xr.DataArray,
-    consumption_curve: xr.DataArray,
+    # consumption_curve: xr.DataArray,
+    hourly_consumption: xr.DataArray,
     battery_capacity_arr: xr.DataArray,
     **params,
 ):
     ORDER = ("power_nominal", "city", "height", "battery_cap", "time")
 
-    hourly_consumption = (
-        consumption_curve
-        .sel(time=power_data.time.dt.hour)
-        .assign_coords(time=power_data.time)
-    )
+    # hourly_consumption = (
+    #     consumption_curve
+    #     .sel(time=power_data.time.dt.hour)
+    #     .assign_coords(time=power_data.time)
+    # )
 
     battery_capacity_arr = (
         battery_capacity_arr
